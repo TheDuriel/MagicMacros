@@ -33,3 +33,5 @@ var myvar: mytype = myvalue:
 # How do I make new macros?
 
 Define macros in MagicMacros/Macros. New macros must extend MagicMacrosMacro type. Disable and reenable the plugin afterwards. You may have to do this twice for the new macros to load.
+
+Made a macro? Consider contributing it!

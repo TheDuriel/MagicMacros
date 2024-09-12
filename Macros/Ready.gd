@@ -18,6 +18,7 @@ static func apply_macro(line: String) -> String:
 	
 	var s: String = ""
 	s += "func _ready() -> void:"
+	s += "\n"
 	s += "	pass"
 	
 	return s

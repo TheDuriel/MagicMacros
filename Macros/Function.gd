@@ -21,6 +21,7 @@ static func apply_macro(line: String) -> String:
 	
 	var s: String = ""
 	s += "func %s() -> %s:" % [name, type]
+	s += "\n"
 	s += "	pass"
 	
 	return s

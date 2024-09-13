@@ -48,6 +48,8 @@ func _exit_tree() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if not _current_editor:
+		return
 	if not _current_editor.is_visible_in_tree():
 		return
 	

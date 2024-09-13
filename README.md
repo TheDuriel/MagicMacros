@@ -36,6 +36,24 @@ Define macros in MagicMacros/Macros. New macros must extend MagicMacrosMacro typ
 
 Made a macro? Consider contributing it!
 
+# Installation
+
+This repository is designed to be loaded as a GIT Submodule. How you add these depends on your client of choice.
+
+[Refer to this if you're mad enough to use the command line :P](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
+
+Alternatively, download the zip from this page and unpack it into your addons folder under res://addons/MagicMacros
+
+# Current Macros
+
+* setget = creates a variable with specified name, type, value, if any, and setters and getters.
+* init = creates the _init function.
+* ready | rdy = creates the _ready function.
+* fn | fnc = creates a function with specified name and return type if any.
+* node = creates an @onready variable with specified name, type, value if any.
+
+---
+
 ### Looking for more?
 
 Check out Nylon! https://theduriel.itch.io/nylon

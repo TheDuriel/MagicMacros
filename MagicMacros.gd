@@ -140,6 +140,8 @@ func _on_tab_pressed(window: Window) -> void:
 	var base: TextEdit = _current_editor.get_base_editor()
 	if not base:
 		return
+	if not base.is_visible_in_tree() and base.has_focus():
+		return
 	if not _current_line_data:
 		return
 	if not _current_line_data.is_valid:

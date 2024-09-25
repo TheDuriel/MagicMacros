@@ -1,6 +1,10 @@
 class_name MagicMacrosLineData
 extends RefCounted
 
+const DEFAULT_IDENTIFIER: String = "identifier"
+const DEFAULT_TYPE: String = "type"
+const DEFAULT_REMAINDER: String = "none"
+
 var id: int = -1
 var source_text: String = ""
 var modified_text: String:
@@ -18,7 +22,7 @@ var has_identifier: bool:
 	get: return not identifier_args.is_empty()
 
 var identifier: String:
-	get: return identifier[0] if has_identifier else ""
+	get: return identifier[0] if has_identifier else DEFAULT_IDENTIFIER
 
 var type_args: Array[String] = []
 
@@ -26,7 +30,7 @@ var has_type: bool:
 	get: return not type_args.is_empty()
 
 var type: String:
-	get: return type_args[0] if has_type else ""
+	get: return type_args[0] if has_type else DEFAULT_TYPE
 
 var remainder_args: Array[String] = []
 
@@ -34,7 +38,7 @@ var has_remainder: bool:
 	get: return not remainder_args.is_empty()
 
 var remainder: String:
-	get: return remainder_args[0] if has_remainder else ""
+	get: return remainder_args[0] if has_remainder else DEFAULT_REMAINDER
 
 var is_valid: bool:
 	get: return true if detected_macro else false

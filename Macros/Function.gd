@@ -9,6 +9,7 @@ static func is_macro_alias(arg: String) -> bool:
 
 
 static func apply_macro(line_data: MagicMacrosLineData) -> String:
+	
 	var s: String = ""
 	s += "func %s() -> %s:" % [line_data.identifier, line_data.type]
 	s += "\n"

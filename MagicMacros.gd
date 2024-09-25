@@ -59,12 +59,15 @@ func _ready() -> void:
 	pascal_case_regex.compile(PASCAL_CASE_REGEX_PATTERN)
 	snake_case_regex = RegEx.new()
 	snake_case_regex.compile(SNAKE_CASE_REGEX_PATTERN)
+	print("MagicMacros: Enabled")
 
 
 func _exit_tree() -> void:
 	if _current_editor:
 		var base: TextEdit = _current_editor.get_base_editor()
 		base.remove_theme_color_override(THEME_COLOR_CONSTANT)
+	for node: Node in _input_catchers.values():
+		node.queue_free()
 
 
 func _process(delta: float) -> void:
@@ -79,6 +82,7 @@ func _attach_input_catchers() -> void:
 	if not root_window in _input_catchers:
 		_input_catchers[root_window] = MagicMacrosInputCatcher.new(root_window)
 		_input_catchers[root_window].tab_pressed.connect(_on_tab_pressed)
+		print("MagicMacros: Main window hooked.")
 	
 	var subwindows: Array[Window] = root_window.get_embedded_subwindows()
 	
@@ -86,6 +90,7 @@ func _attach_input_catchers() -> void:
 		if not window in _input_catchers:
 			_input_catchers[window] = MagicMacrosInputCatcher.new(window)
 			_input_catchers[window].tab_pressed.connect(_on_tab_pressed)
+			print("MagicMacros: Sub window hooked.")
 	
 	# Over time, there may be junk entries in the dictionary.
 	# But only if the user opens dozens of windows. Should be fine.
@@ -128,6 +133,8 @@ func _get_line_data() -> void:
 func _update_line_color() -> void:
 	var base: TextEdit = _current_editor.get_base_editor()
 	if not base:
+		return
+	if not _current_line_data:
 		return
 	
 	if _current_line_data.is_valid:

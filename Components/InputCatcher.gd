@@ -24,5 +24,5 @@ func _input(event: InputEvent) -> void:
 	if not e.keycode == KEY_TAB:
 		return
 	
-	if e.is_released() and not e.echo:
+	if e.pressed and not e.is_echo() and not e.is_released():
 		tab_pressed.emit(_window)

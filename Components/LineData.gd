@@ -7,26 +7,32 @@ var modified_text: String:
 	get:
 		if not is_valid:
 			return source_text
-		return detected_macro.call(_plugin.MACRO_APPLY_FUNC, self)
+		return detected_macro.call(_plugin.macros_apply_func, self)
 
 var detected_macro: Script
 var macro_arg: String = ""
 
 var identifier_args: Array[String] = []
+
 var has_identifier: bool:
-	get: return identifier_args.is_empty()
+	get: return not identifier_args.is_empty()
+
 var identifier: String:
 	get: return identifier[0] if has_identifier else ""
 
 var type_args: Array[String] = []
+
 var has_type: bool:
-	get: return type_args.is_empty()
+	get: return not type_args.is_empty()
+
 var type: String:
 	get: return type_args[0] if has_type else ""
 
 var remainder_args: Array[String] = []
+
 var has_remainder: bool:
-	get: return remainder_args.is_empty()
+	get: return not remainder_args.is_empty()
+
 var remainder: String:
 	get: return remainder_args[0] if has_remainder else ""
 
@@ -88,7 +94,7 @@ func _arg_is_identifier(arg: String) -> bool:
 
 func _get_macro_script() -> Script:
 	for macro: Script in _plugin.macros:
-		var matches: bool = macro.call(_plugin.MACRO_MATCH_FUNC, source_text)
+		var matches: bool = macro.call(_plugin.macros_alias_func, source_text)
 		if matches:
 			return macro
 	

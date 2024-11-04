@@ -12,10 +12,10 @@ setget
 becomes
 
 var NONAME: Variant = NONE:
-    set(value):
-        NONAME = value
-    get:
-        return NONAME
+	set(value):
+		NONAME = value
+	get:
+		return NONAME
 ```
 
 ```GDScript
@@ -24,10 +24,10 @@ setget myvar mytype myvalue
 becomes
 
 var myvar: mytype = myvalue:
-    set(value):
-        myvar = value
-    get:
-        return myvar
+	set(value):
+		myvar = value
+	get:
+		return myvar
 ```
 
 # How do I make new macros?

@@ -18,7 +18,6 @@ func _init(window: Window) -> void:
 func _input(event: InputEvent) -> void:
 	if not event is InputEventKey:
 		return
-	
 	var e: InputEventKey = event
 	
 	if not e.keycode == KEY_TAB:

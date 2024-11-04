@@ -8,7 +8,6 @@ const THEME_COLOR_CONSTANT: String = "current_line_color"
 const THEME_COLOR_VALID: Color = Color(0.0, 1.0, 0.0, 0.15) # Color to highlight valid macro with
 const PASCAL_CASE_REGEX_PATTERN: String = '^[A-Z][a-zA-Z0-9]*$'
 const SNAKE_CASE_REGEX_PATTERN: String = '^[a-z0-9_]+$'
-
 # Sudo const :D
 var macros_alias_func: String = MagicMacrosMacro.is_macro_alias.get_method()
 var macros_apply_func: String = MagicMacrosMacro.apply_macro.get_method()
@@ -17,7 +16,6 @@ var pascal_case_regex: RegEx
 var snake_case_regex: RegEx
 
 var macros: Array[Script] = []
-
 
 var _current_editor: ScriptEditorBase:
 	set(value):
@@ -53,7 +51,7 @@ var _input_catchers: Dictionary = {} # window, catcher
 
 func _ready() -> void:
 	_load_macros()
-	EditorInterface.get_script_editor().script_changed.connect(_on_script_changed)
+	EditorInterface.get_script_editor().editor_script_changed.connect(_on_script_changed)
 	_current_editor = EditorInterface.get_script_editor().get_current_editor()
 	pascal_case_regex = RegEx.new()
 	pascal_case_regex.compile(PASCAL_CASE_REGEX_PATTERN)
@@ -123,9 +121,7 @@ func _get_line_data() -> void:
 		return
 	var line_id: int = base.get_caret_line()
 	var line_text: String = base.get_line(line_id)
-	
 	_current_line_data = MagicMacrosLineData.new(self, line_id, line_text)
-
 
 func _update_line_color() -> void:
 	var base: TextEdit = _current_editor.get_base_editor()
@@ -150,12 +146,11 @@ func _on_tab_pressed(window: Window) -> void:
 		return
 	if not _current_line_data.is_valid:
 		return
-	
 	base.set_line(_current_line_data.id, _current_line_data.modified_text)
 	base.set_caret_column(0)
 	base.set_caret_line(_current_line_data.id)
 	window.set_input_as_handled()
-
+	
 
 func is_pascal_case(string: String) -> bool:
 	return true if pascal_case_regex.search(string) else false

@@ -78,22 +78,19 @@ func _process(delta: float) -> void:
 
 
 func _attach_input_catchers() -> void:
-	var root_window: Window = get_window()
-	if not root_window in _input_catchers:
-		_input_catchers[root_window] = MagicMacrosInputCatcher.new(root_window)
-		_input_catchers[root_window].tab_pressed.connect(_on_tab_pressed)
-		print("MagicMacros: Main window hooked.")
+	var windows: Array[Window] = []
 	
-	var subwindows: Array[Window] = root_window.get_embedded_subwindows()
+	for window_id: int in DisplayServer.get_window_list():
+		var instance_id: int = DisplayServer.window_get_attached_instance_id(window_id)
+		var window: Window = instance_from_id(instance_id)
+		windows.append(window)
 	
-	for window: Window in subwindows:
+	for window: Window in windows:
+		
 		if not window in _input_catchers:
 			_input_catchers[window] = MagicMacrosInputCatcher.new(window)
 			_input_catchers[window].tab_pressed.connect(_on_tab_pressed)
-			print("MagicMacros: Sub window hooked.")
-	
-	# Over time, there may be junk entries in the dictionary.
-	# But only if the user opens dozens of windows. Should be fine.
+			print("MagicMacros: Window hooked.")
 
 
 func _load_macros() -> void:

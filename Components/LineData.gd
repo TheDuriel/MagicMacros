@@ -57,7 +57,6 @@ func _parse_line() -> void:
 	var args: PackedStringArray = source_text.split(" ", false)
 	if args.is_empty():
 		return
-
 	if _arg_is_macro(args[0]):
 		macro_arg = args[0]
 		args.remove_at(0)

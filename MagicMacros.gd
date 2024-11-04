@@ -17,9 +17,6 @@ var snake_case_regex: RegEx
 
 var macros: Array[Script] = []
 
-
-
-
 var _current_editor: ScriptEditorBase:
 	set(value):
 		if value == _current_editor:
@@ -54,7 +51,6 @@ var _input_catchers: Dictionary = {} # window, catcher
 
 func _ready() -> void:
 	_load_macros()
-	#EditorInterface.get_script_editor().script_changed.connect(_on_script_changed)
 	EditorInterface.get_script_editor().editor_script_changed.connect(_on_script_changed)
 	_current_editor = EditorInterface.get_script_editor().get_current_editor()
 	pascal_case_regex = RegEx.new()
@@ -62,7 +58,6 @@ func _ready() -> void:
 	snake_case_regex = RegEx.new()
 	snake_case_regex.compile(SNAKE_CASE_REGEX_PATTERN)
 	print("MagicMacros: Enabled")
-
 
 
 func _exit_tree() -> void:
@@ -159,8 +154,6 @@ func _on_tab_pressed(window: Window) -> void:
 	base.set_caret_line(_current_line_data.id)
 	window.set_input_as_handled()
 	
-	
-
 
 func is_pascal_case(string: String) -> bool:
 	return true if pascal_case_regex.search(string) else false

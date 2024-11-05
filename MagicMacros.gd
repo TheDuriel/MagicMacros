@@ -48,12 +48,12 @@ var _current_line_data: MagicMacrosLineData:
 var _window_check_time: float = 0.0
 var _window_check_wait_time: float = 5.0
 
-var _input_catchers: Dictionary = {} # window, catcher
-
 
 func _ready() -> void:
 	_load_macros()
 	EditorInterface.get_script_editor().script_changed.connect(_on_script_changed)
+	var InputCatcher:MagicMacrosInputCatcher = MagicMacrosInputCatcher.new()
+	InputCatcher.tab_pressed.connect(_on_tab_pressed)
 	_current_editor = EditorInterface.get_script_editor().get_current_editor()
 	pascal_case_regex = RegEx.new()
 	pascal_case_regex.compile(PASCAL_CASE_REGEX_PATTERN)
@@ -61,36 +61,11 @@ func _ready() -> void:
 	snake_case_regex.compile(SNAKE_CASE_REGEX_PATTERN)
 	print("MagicMacros: Enabled")
 
-
 func _exit_tree() -> void:
 	if _current_editor:
 		var base: TextEdit = _current_editor.get_base_editor()
 		base.remove_theme_color_override(THEME_COLOR_CONSTANT)
-	for node: Node in _input_catchers.values():
-		node.queue_free()
 
-
-func _process(delta: float) -> void:
-	_window_check_time += delta
-	if _window_check_time > _window_check_wait_time:
-		_window_check_time = 0.0
-		_attach_input_catchers()
-
-
-func _attach_input_catchers() -> void:
-	var windows: Array[Window] = []
-	
-	for window_id: int in DisplayServer.get_window_list():
-		var instance_id: int = DisplayServer.window_get_attached_instance_id(window_id)
-		var window: Window = instance_from_id(instance_id)
-		windows.append(window)
-	
-	for window: Window in windows:
-		
-		if not window in _input_catchers:
-			_input_catchers[window] = MagicMacrosInputCatcher.new(window)
-			_input_catchers[window].tab_pressed.connect(_on_tab_pressed)
-			print("MagicMacros: Window hooked.")
 
 
 func _load_macros() -> void:
@@ -140,7 +115,7 @@ func _update_line_color() -> void:
 		base.remove_theme_color_override(THEME_COLOR_CONSTANT)
 
 
-func _on_tab_pressed(window: Window) -> void:
+func _on_tab_pressed() -> void:
 	var base: TextEdit = _current_editor.get_base_editor()
 	if not base:
 		return
@@ -154,8 +129,9 @@ func _on_tab_pressed(window: Window) -> void:
 	base.set_line(_current_line_data.id, _current_line_data.modified_text)
 	base.set_caret_column(0)
 	base.set_caret_line(_current_line_data.id)
-	window.set_input_as_handled()
-
+	EditorInterface.get_script_editor().get_viewport().set_input_as_handled()
+	var editor: CodeEdit = EditorInterface.get_script_editor().get_current_editor().get_base_editor()
+	editor.cancel_code_completion()
 
 func is_pascal_case(string: String) -> bool:
 	return true if pascal_case_regex.search(string) else false

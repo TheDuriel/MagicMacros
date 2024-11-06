@@ -21,7 +21,6 @@ var macros: Array[Script] = []
 
 var _current_editor: ScriptEditorBase:
 	set(value):
-		print("gg")
 		if value == _current_editor:
 			return
 		

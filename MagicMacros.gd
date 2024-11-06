@@ -21,6 +21,7 @@ var macros: Array[Script] = []
 
 var _current_editor: ScriptEditorBase:
 	set(value):
+		print("gg")
 		if value == _current_editor:
 			return
 		
@@ -45,11 +46,9 @@ var _current_line_data: MagicMacrosLineData:
 		_current_line_data = value
 		_update_line_color()
 
-var _window_check_time: float = 0.0
-var _window_check_wait_time: float = 5.0
-
 
 func _ready() -> void:
+	await get_tree().create_timer(1).timeout
 	_load_macros()
 	EditorInterface.get_script_editor().script_changed.connect(_on_script_changed)
 	var InputCatcher:MagicMacrosInputCatcher = MagicMacrosInputCatcher.new()
@@ -60,6 +59,8 @@ func _ready() -> void:
 	snake_case_regex = RegEx.new()
 	snake_case_regex.compile(SNAKE_CASE_REGEX_PATTERN)
 	print("MagicMacros: Enabled")
+
+
 
 func _exit_tree() -> void:
 	if _current_editor:
@@ -116,7 +117,7 @@ func _update_line_color() -> void:
 
 
 func _on_tab_pressed() -> void:
-	var base: TextEdit = _current_editor.get_base_editor()
+	var base: CodeEdit = _current_editor.get_base_editor()
 	if not base:
 		return
 	if not base.is_visible_in_tree() and base.has_focus():
@@ -129,9 +130,8 @@ func _on_tab_pressed() -> void:
 	base.set_line(_current_line_data.id, _current_line_data.modified_text)
 	base.set_caret_column(0)
 	base.set_caret_line(_current_line_data.id)
+	base.cancel_code_completion()
 	EditorInterface.get_script_editor().get_viewport().set_input_as_handled()
-	var editor: CodeEdit = EditorInterface.get_script_editor().get_current_editor().get_base_editor()
-	editor.cancel_code_completion()
 
 func is_pascal_case(string: String) -> bool:
 	return true if pascal_case_regex.search(string) else false

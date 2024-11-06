@@ -144,11 +144,14 @@ func _on_tab_pressed() -> void:
 	if not _current_line_data.is_valid:
 		return
 	
-	base.set_line(_current_line_data.id, _current_line_data.modified_text)
+	_current_editor.get_viewport().set_input_as_handled()
+	base.cancel_code_completion()
+	
+	base.set_line(_current_line_data.line_index, _current_line_data.modified_text)
 	base.set_caret_column(0)
 	base.set_caret_line(_current_line_data.id)
+	
 	base.cancel_code_completion()
-	EditorInterface.get_script_editor().get_viewport().set_input_as_handled()
 
 
 func is_pascal_case(string: String) -> bool:

@@ -7,7 +7,7 @@ extends Node
 signal tab_pressed
 
 
-func _init()->void:
+func _init() -> void:
 	EditorInterface.get_script_editor().add_child(self)
 
 

@@ -49,7 +49,8 @@ var _current_line_data: MagicMacrosLineData:
 func _ready() -> void:
 	await get_tree().create_timer(1).timeout
 	_load_macros()
-	EditorInterface.get_script_editor().script_changed.connect(_on_script_changed)
+	EditorInterface.get_script_editor().editor_script_changed.connect(_on_script_changed)
+	#EditorInterface.get_script_editor().script_changed
 	var InputCatcher:MagicMacrosInputCatcher = MagicMacrosInputCatcher.new()
 	InputCatcher.tab_pressed.connect(_on_tab_pressed)
 	_current_editor = EditorInterface.get_script_editor().get_current_editor()

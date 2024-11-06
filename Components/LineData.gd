@@ -37,7 +37,6 @@ var identifier: String:
 
 # Types detected within the line
 # Types are always PascalCase, follows GDScript style guide
-# TODO: Some built in types, int, float, bool, may currently be missed
 var type_args: Array[String] = []
 
 var has_type: bool:

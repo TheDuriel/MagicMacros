@@ -66,14 +66,13 @@ func _parse_line() -> void:
 	var identifiers: Array[String] = []
 	var remainders: Array[String] = []
 	
-	if args.size() and _arg_is_identifier(args[0]):
-		identifiers.append(args[0])
-		args.remove_at(0)
-	if args.size():
-		types.append(args[0])
-		args.remove_at(0)
 	for arg: String in args:
-		remainders.append(arg)
+		if _arg_is_type(arg):
+			types.append(arg)
+		elif _arg_is_identifier(arg):
+			identifiers.append(arg)
+		else:
+			remainders.append(arg)
 	
 	type_args = types
 	identifier_args = identifiers

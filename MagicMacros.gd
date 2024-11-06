@@ -140,6 +140,7 @@ func _on_tab_pressed() -> void:
 	base.cancel_code_completion()
 	EditorInterface.get_script_editor().get_viewport().set_input_as_handled()
 
+
 func is_pascal_case(string: String) -> bool:
 	return true if pascal_case_regex.search(string) else false
 

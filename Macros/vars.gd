@@ -23,3 +23,18 @@ static func apply_macro(line_data: MagicMacrosLineData) -> String:
 			for i in ind:
 				s+= "var %s: %s = %s\n\n" % [line_data.get_arg(i,"val"+str(i)), line_data.get_arg(last_index-1,"int"), line_data.get_arg(last_index,"0")]
 	return s
+
+# Examples: 
+#1->
+# vars one int 0 gives
+# var one:int = 0
+#2->
+# vars one two three int 0 gives
+# var one : int = 0
+# var two : int = 0
+# var three : int = 0
+#3->
+# vars one 3 int 0 gives
+# var one0 : int = 0
+# var one1 : int = 0
+# var one2 : int = 0

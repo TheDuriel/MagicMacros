@@ -22,7 +22,7 @@ var has_identifier: bool:
 	get: return not identifier_args.is_empty()
 
 var identifier: String:
-	get: return identifier[0] if has_identifier else DEFAULT_IDENTIFIER
+	get: return identifier_args[0] if has_identifier else DEFAULT_IDENTIFIER
 
 var type_args: Array[String] = []
 
@@ -66,13 +66,14 @@ func _parse_line() -> void:
 	var identifiers: Array[String] = []
 	var remainders: Array[String] = []
 	
+	if args.size() and _arg_is_identifier(args[0]):
+		identifiers.append(args[0])
+		args.remove_at(0)
+	if args.size():
+		types.append(args[0])
+		args.remove_at(0)
 	for arg: String in args:
-		if _arg_is_type(arg):
-			types.append(arg)
-		elif _arg_is_identifier(arg):
-			identifiers.append(arg)
-		else:
-			remainders.append(arg)
+		remainders.append(arg)
 	
 	type_args = types
 	identifier_args = identifiers
@@ -98,8 +99,7 @@ func _arg_is_identifier(arg: String) -> bool:
 
 func _get_macro_script() -> Script:
 	for macro: Script in _plugin.macros:
-		var matches: bool = macro.call(_plugin.macros_alias_func, source_text)
+		var matches: bool = macro.call(_plugin.macros_alias_func, macro_arg)
 		if matches:
 			return macro
-	
 	return null

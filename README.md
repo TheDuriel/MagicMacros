@@ -6,29 +6,7 @@ This addon integrates with the Script Editor in Godot. It will scan the currentl
 
 Example:
 
-```GDScript
-setget
-
-becomes
-
-var NONAME: Variant = NONE:
-    set(value):
-        NONAME = value
-    get:
-        return NONAME
-```
-
-```GDScript
-setget myvar mytype myvalue
-
-becomes
-
-var myvar: mytype = myvalue:
-    set(value):
-        myvar = value
-    get:
-        return myvar
-```
+![AAADADSA](https://github.com/user-attachments/assets/779b4cb5-f285-4489-a907-017e6e85bcb3)
 
 # How do I make new macros?
 

@@ -1,63 +1,84 @@
 class_name MagicMacrosLineData
 extends RefCounted
+# Analyzes a provided Line to determine its contents and applicable macro.
 
 const DEFAULT_IDENTIFIER: String = "identifier"
 const DEFAULT_TYPE: String = "type"
 const DEFAULT_REMAINDER: String = "none"
 
-var id: int = -1
+# ID of the Line within its TextEditor
+var line_index: int = -1
+# The raw text of the line
 var source_text: String = ""
+
+# The output of the macro
 var modified_text: String:
 	get:
 		if not is_valid:
 			return source_text
 		return detected_macro.call(_plugin.macros_apply_func, self)
 
+# The macro applicable to this line, if any
 var detected_macro: Script
+# The argument with which the macro is detected.
 var macro_arg: String = ""
 
+# Identifiers detected within the line
+# identifiers are always snake_case, follows GDScript style guide
 var identifier_args: Array[String] = []
 
 var has_identifier: bool:
 	get: return not identifier_args.is_empty()
 
+# Convenience helper value for retrieving the first identifier in the line.
 var identifier: String:
 	get: return identifier_args[0] if has_identifier else DEFAULT_IDENTIFIER
 
+# Types detected within the line
+# Types are always PascalCase, follows GDScript style guide
+# TODO: Some built in types, int, float, bool, may currently be missed
 var type_args: Array[String] = []
 
 var has_type: bool:
 	get: return not type_args.is_empty()
 
+# Convenience helper value for retrieving the first type in the line.
 var type: String:
 	get: return type_args[0] if has_type else DEFAULT_TYPE
 
+# Any remaining arguments that are not identifiers or types
 var remainder_args: Array[String] = []
 
 var has_remainder: bool:
 	get: return not remainder_args.is_empty()
 
+# Convenience helper value for retreiving the first remainder value.
 var remainder: String:
 	get: return remainder_args[0] if has_remainder else DEFAULT_REMAINDER
 
 var is_valid: bool:
 	get: return true if detected_macro else false
 
+# Reference to the plugin script
 var _plugin: MagicMacros
 
 
 func _init(plugin: MagicMacros, line_id: int, line_text: String) -> void:
 	_plugin = plugin
-	id = line_id
+	line_index = line_id
 	source_text = line_text
+	
 	_parse_line()
 
 
 func _parse_line() -> void:
+	# Get the individual arguments
 	var args: PackedStringArray = source_text.split(" ", false)
 	if args.is_empty():
 		return
 	
+	# The first argument must be a macro argument
+	# Eg. 'fn' or 'rdy'
 	if _arg_is_macro(args[0]):
 		macro_arg = args[0]
 		args.remove_at(0)
@@ -66,6 +87,7 @@ func _parse_line() -> void:
 	var identifiers: Array[String] = []
 	var remainders: Array[String] = []
 	
+	# Detect and sort arguments by category.
 	for arg: String in args:
 		if _arg_is_type(arg):
 			types.append(arg)
@@ -78,17 +100,20 @@ func _parse_line() -> void:
 	identifier_args = identifiers
 	remainder_args = remainders
 	
+	# Retrieve the macro
 	detected_macro = _get_macro_script()
 
 
 func _arg_is_macro(arg: String) -> bool:
 	for macro: Script in _plugin.macros:
-		if macro.call(_plugin.macros_alias_func, arg):
-			return true
+		# Will return a bool. See MagicMacroMacro for this.
+		return macro.call(_plugin.macros_alias_func, arg)
 	return false
 
 
 func _arg_is_type(arg: String) -> bool:
+	# TODO: Check for exceptions where built in types are not pascal case
+	# Example: int, float, bool
 	return _plugin.is_pascal_case(arg)
 
 

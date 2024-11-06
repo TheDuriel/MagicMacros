@@ -1,6 +1,8 @@
 class_name MagicMacrosInputCatcher
 extends Node
 # This class intercepts inputs meant for the CodeEditor
+# This is to prevent the CodeEditor from inserting Tabs or perfomring code completion
+# When you are accepting a macro
 
 signal tab_pressed
 

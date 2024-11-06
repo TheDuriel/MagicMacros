@@ -5,21 +5,28 @@ extends EditorPlugin
 const MACROS_DIR: String = "res://addons/MagicMacros/Macros/"
 
 const THEME_COLOR_CONSTANT: String = "current_line_color"
-const THEME_COLOR_VALID: Color = Color(0.0, 1.0, 0.0, 0.15) # Color to highlight valid macro with
+# Color with which to highlight a valid macro with
+const THEME_COLOR_VALID: Color = Color(0.0, 1.0, 0.0, 0.15)
+# regex patterns used for argument detection. See LineData
 const PASCAL_CASE_REGEX_PATTERN: String = '^[A-Z][a-zA-Z0-9]*$'
 const SNAKE_CASE_REGEX_PATTERN: String = '^[a-z0-9_]+$'
-
-# Sudo const :D
-var macros_alias_func: String = MagicMacrosMacro.is_macro_alias.get_method()
-var macros_apply_func: String = MagicMacrosMacro.apply_macro.get_method()
 
 var pascal_case_regex: RegEx
 var snake_case_regex: RegEx
 
+# This is a bit silly. But since the list of macros is dynamic and not constant
+# This is the only "reasonable" way of reliably getting the method name to call() in LineData
+var macros_alias_func: String = MagicMacrosMacro.is_macro_alias.get_method()
+var macros_apply_func: String = MagicMacrosMacro.apply_macro.get_method()
+
+# List of Macro Script resources found in MagicMacros/Macros
+# Macros are not instanced, but statically called
 var macros: Array[Script] = []
 
 var _input_catcher: MagicMacrosInputCatcher
 
+# While the ScriptEditor is always present, it will instance one CodeEditor per open script
+# This mess is part of making sure that we only interact with the currently visible script editor
 var _current_editor: ScriptEditorBase:
 	set(value):
 		if value == _current_editor:
@@ -41,6 +48,7 @@ var _current_editor: ScriptEditorBase:
 				base.text_changed.connect(_on_text_changed)
 				base.caret_changed.connect(_on_caret_changed)
 
+# LineData for the currently highlight line in the CodeEditor
 var _current_line_data: MagicMacrosLineData:
 	set(value):
 		_current_line_data = value
@@ -76,6 +84,7 @@ func _exit_tree() -> void:
 		_input_catcher.queue_free()
 
 
+# TODO: Consider making this path configurable. But it's probably not worth the trouble.
 func _load_macros() -> void:
 	var files: PackedStringArray = DirAccess.get_files_at(MACROS_DIR)
 	for file: String in files:
@@ -85,6 +94,7 @@ func _load_macros() -> void:
 			macros.append(script)
 
 
+# When the currently edited script changes.
 func _on_script_changed(_script: Script) -> void:
 	_current_editor = EditorInterface.get_script_editor().get_current_editor()
 	_get_line_data()

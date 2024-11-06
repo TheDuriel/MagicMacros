@@ -5,6 +5,7 @@ extends RefCounted
 const DEFAULT_IDENTIFIER: String = "identifier"
 const DEFAULT_TYPE: String = "type"
 const DEFAULT_REMAINDER: String = "none"
+const NON_PASCAL_TYPES: Array[String] = ["bool", "float", "int"]
 
 # ID of the Line within its TextEditor
 var line_index: int = -1
@@ -112,8 +113,9 @@ func _arg_is_macro(arg: String) -> bool:
 
 
 func _arg_is_type(arg: String) -> bool:
-	# TODO: Check for exceptions where built in types are not pascal case
-	# Example: int, float, bool
+	if arg in NON_PASCAL_TYPES:
+		return true
+	
 	return _plugin.is_pascal_case(arg)
 
 

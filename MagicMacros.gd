@@ -44,7 +44,7 @@ var _current_line_data: MagicMacrosLineData:
 var InputCatcher:MagicMacrosInputCatcher
 
 func _ready() -> void:
-	await get_tree().create_timer(1).timeout
+	await get_tree().physics_frame
 	_load_macros()
 	EditorInterface.get_script_editor().editor_script_changed.connect(_on_script_changed)
 	InputCatcher = MagicMacrosInputCatcher.new()

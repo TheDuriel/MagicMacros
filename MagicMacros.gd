@@ -73,15 +73,18 @@ func _ready() -> void:
 	snake_case_regex = RegEx.new()
 	snake_case_regex.compile(SNAKE_CASE_REGEX_PATTERN)
 	
-	print("MagicMacros: Enabled")
+	print("MagicMacros: %s macros enabled" % macros.size())
 
 
 func _exit_tree() -> void:
 	if _current_editor:
 		var base: TextEdit = _current_editor.get_base_editor()
 		base.remove_theme_color_override(THEME_COLOR_CONSTANT)
+	
 	if _input_catcher:
 		_input_catcher.queue_free()
+	
+	print("MagicMacros: Disabled")
 
 
 # TODO: Consider making this path configurable. But it's probably not worth the trouble.

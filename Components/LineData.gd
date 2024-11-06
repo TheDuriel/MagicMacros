@@ -107,7 +107,8 @@ func _parse_line() -> void:
 func _arg_is_macro(arg: String) -> bool:
 	for macro: Script in _plugin.macros:
 		# Will return a bool. See MagicMacroMacro for this.
-		return macro.call(_plugin.macros_alias_func, arg)
+		if macro.call(_plugin.macros_alias_func, arg):
+			return true
 	return false
 
 

@@ -152,7 +152,7 @@ func _on_tab_pressed() -> void:
 	
 	base.set_line(_current_line_data.line_index, _current_line_data.modified_text)
 	base.set_caret_column(0)
-	base.set_caret_line(_current_line_data.id)
+	base.set_caret_line(_current_line_data.line_index)
 	
 	base.cancel_code_completion()
 

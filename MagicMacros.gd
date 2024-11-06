@@ -18,6 +18,7 @@ var snake_case_regex: RegEx
 
 var macros: Array[Script] = []
 
+var _input_catcher: MagicMacrosInputCatcher
 
 var _current_editor: ScriptEditorBase:
 	set(value):
@@ -47,25 +48,32 @@ var _current_line_data: MagicMacrosLineData:
 
 
 func _ready() -> void:
-	await get_tree().create_timer(1).timeout
+	# HACK: Fixes macros not loading? Unconfirmeed
+	await get_tree().process_frame
+	
 	_load_macros()
+	
 	EditorInterface.get_script_editor().editor_script_changed.connect(_on_script_changed)
-	var InputCatcher:MagicMacrosInputCatcher = MagicMacrosInputCatcher.new()
-	InputCatcher.tab_pressed.connect(_on_tab_pressed)
+	
+	_input_catcher = MagicMacrosInputCatcher.new()
+	_input_catcher.tab_pressed.connect(_on_tab_pressed)
+	
 	_current_editor = EditorInterface.get_script_editor().get_current_editor()
+	
 	pascal_case_regex = RegEx.new()
 	pascal_case_regex.compile(PASCAL_CASE_REGEX_PATTERN)
 	snake_case_regex = RegEx.new()
 	snake_case_regex.compile(SNAKE_CASE_REGEX_PATTERN)
+	
 	print("MagicMacros: Enabled")
-
 
 
 func _exit_tree() -> void:
 	if _current_editor:
 		var base: TextEdit = _current_editor.get_base_editor()
 		base.remove_theme_color_override(THEME_COLOR_CONSTANT)
-
+	if _input_catcher:
+		_input_catcher.queue_free()
 
 
 func _load_macros() -> void:

@@ -34,7 +34,7 @@ var _current_editor: ScriptEditorBase:
 		
 		var base: TextEdit
 		
-		if _current_editor:
+		if is_instance_valid(_current_editor):
 			base = _current_editor.get_base_editor()
 			if base:
 				base.text_changed.disconnect(_on_text_changed)
@@ -124,6 +124,9 @@ func _get_line_data() -> void:
 
 
 func _update_line_color() -> void:
+	if not is_instance_valid(_current_editor):
+		return
+	
 	var base: TextEdit = _current_editor.get_base_editor()
 	if not base:
 		return

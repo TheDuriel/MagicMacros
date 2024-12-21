@@ -5,7 +5,7 @@ extends RefCounted
 const DEFAULT_IDENTIFIER: String = "identifier"
 const DEFAULT_TYPE: String = "type"
 const DEFAULT_REMAINDER: String = "none"
-const NON_PASCAL_TYPES: Array[String] = ["bool", "float", "int"]
+const NON_PASCAL_TYPES: Array[String] = ["void", "bool", "float", "int"]
 
 # ID of the Line within its TextEditor
 var line_index: int = -1

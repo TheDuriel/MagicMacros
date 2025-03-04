@@ -91,6 +91,10 @@ func _exit_tree() -> void:
 func _load_macros() -> void:
 	var files: PackedStringArray = DirAccess.get_files_at(MACROS_DIR)
 	for file: String in files:
+		
+		if file.ends_with(".remap") or file.ends_with(".uid"):
+			continue
+		
 		var file_path: String = MACROS_DIR.path_join(file)
 		var script: Script = load(file_path)
 		if script.has_method(macros_alias_func):

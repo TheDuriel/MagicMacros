@@ -22,7 +22,10 @@ var modified_text: String:
 # The macro applicable to this line, if any
 var detected_macro: Script
 # The argument with which the macro is detected.
-var macro_arg: String = ""
+var arg: String:
+	get(): return args[0]
+var args: Array:
+	get(): return source_text.split(" ") 
 
 # Identifiers detected within the line
 # identifiers are always snake_case, follows GDScript style guide
@@ -62,12 +65,13 @@ var is_valid: bool:
 # Reference to the plugin script
 var _plugin: MagicMacros
 
+var source_script: GDScript
 
-func _init(plugin: MagicMacros, line_id: int, line_text: String) -> void:
+func _init(plugin: MagicMacros, line_id: int, line_text: String, script: GDScript) -> void:
 	_plugin = plugin
 	line_index = line_id
 	source_text = line_text
-	
+	source_script = script
 	_parse_line()
 
 
@@ -80,7 +84,6 @@ func _parse_line() -> void:
 	# The first argument must be a macro argument
 	# Eg. 'fn' or 'rdy'
 	if _arg_is_macro(args[0]):
-		macro_arg = args[0]
 		args.remove_at(0)
 	
 	var types: Array[String] = []
@@ -107,7 +110,7 @@ func _parse_line() -> void:
 func _arg_is_macro(arg: String) -> bool:
 	for macro: Script in _plugin.macros:
 		# Will return a bool. See MagicMacroMacro for this.
-		if macro.call(_plugin.macros_alias_func, arg):
+		if macro.call(_plugin.macros_alias_func, self):
 			return true
 	return false
 
@@ -125,7 +128,7 @@ func _arg_is_identifier(arg: String) -> bool:
 
 func _get_macro_script() -> Script:
 	for macro: Script in _plugin.macros:
-		var matches: bool = macro.call(_plugin.macros_alias_func, macro_arg)
+		var matches: bool = macro.call(_plugin.macros_alias_func, self)
 		if matches:
 			return macro
 	return null

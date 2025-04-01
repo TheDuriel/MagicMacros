@@ -5,8 +5,8 @@ extends RefCounted
 
 # Return true if the argument provided is the trigger for this macro.
 # Eg: The ready macro uses "ready" and "rdy"
-static func is_macro_alias(arg: String) -> bool:
-	return arg in []
+static func is_macro_alias(data: MagicMacrosLineData) -> bool:
+	return data.arg in []
 
 
 # Return the new line to be inserted

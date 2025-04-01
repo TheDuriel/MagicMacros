@@ -124,7 +124,7 @@ func _get_line_data() -> void:
 	var line_id: int = base.get_caret_line()
 	var line_text: String = base.get_line(line_id)
 	
-	_current_line_data = MagicMacrosLineData.new(self, line_id, line_text)
+	_current_line_data = MagicMacrosLineData.new(self, line_id, line_text, EditorInterface.get_script_editor().get_current_script())
 
 
 func _update_line_color() -> void:

@@ -116,7 +116,7 @@ func _parse_line() -> void:
 
 
 func _count_tabs() -> int:
-	var tabs_count = 0
+	var tabs_count: int = 0
 
 	for i in source_text.length():
 		var tab: String = source_text[i]

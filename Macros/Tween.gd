@@ -9,5 +9,5 @@ static func is_macro_alias(arg: String) -> bool:
 
 
 static func apply_macro(line_data: MagicMacrosLineData) -> String:
-	var s: String = "%svar tween: Tween = create_tween()" % line_data.indent
+	var s: String = line_data.indent + "var tween: Tween = create_tween()"
 	return s

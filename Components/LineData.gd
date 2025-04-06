@@ -80,8 +80,7 @@ func _init(plugin: MagicMacros, line_id: int, line_text: String) -> void:
 func _parse_line() -> void:
 	# Count only tabs in the beginning of the line
 	# and remember line indentation
-	var tabs_count = _count_tabs()
-	_indent = "%s" % "	".repeat(tabs_count) if tabs_count > 0 else ""
+	_indent = _get_indentation()
 	
 	# Replace tabs in line and get the individual arguments
 	var args: PackedStringArray = source_text.replace("	", "").split(" ", false)
@@ -115,17 +114,16 @@ func _parse_line() -> void:
 	detected_macro = _get_macro_script()
 
 
-func _count_tabs() -> int:
-	var tabs_count: int = 0
+func _get_indentation() -> String:
+	var i: String = ""
 
-	for i in source_text.length():
-		var tab: String = source_text[i]
-		if (tab != "	"):
-			return tabs_count
-		
-		tabs_count += 1
-
-	return tabs_count
+	for c: String in source_text:
+		if c in [" ", "	"]:
+			i += c
+			continue
+		break
+	
+	return i
 
 
 func _arg_is_macro(arg: String) -> bool:

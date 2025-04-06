@@ -20,7 +20,7 @@ static func apply_macro(line_data: MagicMacrosLineData) -> String:
 		var type: String = types[min(idx, types.size() - 1)] if not types.is_empty() else "type"
 		var value: String = values[min(idx, values.size() - 1)] if not values.is_empty() else "null"
 		
-		var ss: String = "%svar %s: %s = %s" % [line_data.indent, identifier, type, value]
+		var ss: String = line_data.indent + "var %s: %s = %s" % [identifier, type, value]
 		s += ss
 		if not idx == identifiers.size() - 1:
 			s += "\n"

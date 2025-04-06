@@ -62,6 +62,12 @@ var is_valid: bool:
 # Reference to the plugin script
 var _plugin: MagicMacros
 
+# Line indentation
+var _indent: String = ""
+
+var indent: String:
+	get: return _indent
+
 
 func _init(plugin: MagicMacros, line_id: int, line_text: String) -> void:
 	_plugin = plugin
@@ -72,8 +78,11 @@ func _init(plugin: MagicMacros, line_id: int, line_text: String) -> void:
 
 
 func _parse_line() -> void:
-	# Get the individual arguments
-	var args: PackedStringArray = source_text.split(" ", false)
+	var tabs_count = source_text.count("	")
+	_indent = "%s" % "	".repeat(tabs_count) if tabs_count > 0 else ""
+	
+	# Replace tabs in line and get the individual arguments
+	var args: PackedStringArray = source_text.replace("	", "").split(" ", false)
 	if args.is_empty():
 		return
 	

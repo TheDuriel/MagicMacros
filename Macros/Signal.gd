@@ -24,13 +24,14 @@ static func apply_macro(line_data: MagicMacrosLineData) -> String:
 	identifiers = line_data.identifier_args.duplicate()
 	types = line_data.type_args.duplicate()
 	
+	var signal_name: String = identifiers[0]
 	var method_parameters: String = create_parameters(true)
 	var passed_in_parameters = create_parameters(false)
 	
-	s  = "signal %s" % identifiers[0]
+	s  = "signal %s" % signal_name
 	s += "(%s)\n\n" % method_parameters if !method_parameters.is_empty() else "\n\n"
-	s += "func emit_%s(%s) -> void:\n" % [identifiers[0], method_parameters]
-	s += "	%s.emit(%s)\n" %  [identifiers[0], passed_in_parameters]
+	s += "func emit_%s(%s) -> void:\n" % [signal_name, method_parameters]
+	s += "	%s.emit(%s)\n" %  [signal_name, passed_in_parameters]
 	
 	return s
 

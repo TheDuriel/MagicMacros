@@ -8,7 +8,13 @@ const THEME_COLOR_CONSTANT: String = "current_line_color"
 # Color with which to highlight a valid macro with
 const THEME_COLOR_VALID: Color = Color(0.0, 1.0, 0.0, 0.15)
 # regex patterns used for argument detection. See LineData
-const PASCAL_CASE_REGEX_PATTERN: String = '^[A-Z][a-zA-Z0-9]*$'
+# Captures following PascalCase type combinations
+# Test
+# Test2
+# Test.Test
+# Test1.Test
+# Test1.Test2.Test.Test.Test...
+const PASCAL_CASE_REGEX_PATTERN: String = '^[A-Z][A-Za-z0-9]*(\\.[A-Z][A-Za-z0-9]*)*?$'
 const SNAKE_CASE_REGEX_PATTERN: String = '^[a-z0-9_]+$'
 
 var pascal_case_regex: RegEx

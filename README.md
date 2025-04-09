@@ -29,6 +29,8 @@ Alternatively, download the zip from this page and unpack it into your addons fo
 * ready | rdy = creates the _ready function.
 * fn | fnc = creates a function with specified name and return type if any.
 * node = creates an @onready variable with specified name, type, value if any.
+* tw = create a tween variable
+* sig = creates a signal with specified name and parameters, creates an emit function
 
 ---
 

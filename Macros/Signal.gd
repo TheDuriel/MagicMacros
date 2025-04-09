@@ -27,8 +27,8 @@ static func apply_macro(line_data: MagicMacrosLineData) -> String:
 	var method_parameters: String = create_parameters(true)
 	var passed_in_parameters = create_parameters(false)
 	
-	s  = "signal %s\n\n" % identifiers[0]
-	s += "(%s)" % method_parameters if !method_parameters.is_empty() else ""
+	s  = "signal %s" % identifiers[0]
+	s += "(%s)\n\n" % method_parameters if !method_parameters.is_empty() else "\n\n"
 	s += "func emit_%s(%s) -> void:\n" % [identifiers[0], method_parameters]
 	s += "	%s.emit(%s)\n" %  [identifiers[0], passed_in_parameters]
 	
